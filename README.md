@@ -1,7 +1,5 @@
 # PIU-Laboratoare
 
-Repositoriu pentru laboratoarele de **Proiectarea Interfetelor Utilizator** 
-
 ## Aplicatia practica: ApartManager
 
 ApartManager este o aplicatie consola C# pentru gestionarea unei cladiri de apartamente. Sistemul este destinat administratorului care doreste sa tina evidenta apartamentelor, chiriasilor, platilor de chirie si solicitarilor de reparatii.
