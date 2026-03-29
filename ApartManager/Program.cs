@@ -98,7 +98,7 @@ namespace ApartManager
             List<Apartament> rezultat = new List<Apartament>();
             for (int i = 0; i < lista.Count; i++)
             {
-                if (lista[i].PretChirie < pretMax)
+                if (lista[i].PretChirie <= pretMax)
                     rezultat.Add(lista[i]);
             }
             return rezultat;
@@ -107,12 +107,14 @@ namespace ApartManager
         static void Main()
         {
             string optiune;
+            Apartament ultimulApartament = null;
 
             do
             {
                 Console.WriteLine("\n===== ApartManager =====");
                 Console.WriteLine("C. Citire apartament nou");
                 Console.WriteLine("H. Citire chirias nou");
+                Console.WriteLine("I. Afisare ultimul apartament citit");
                 Console.WriteLine("A. Afisare toate apartamentele");
                 Console.WriteLine("L. Afisare toti chiriasii");
                 Console.WriteLine("E. Cautare apartamente dupa etaj");
@@ -126,8 +128,8 @@ namespace ApartManager
                 switch (optiune)
                 {
                     case "C":
-                        Apartament ap = CitireApartament();
-                        apartamente.Add(ap);
+                        ultimulApartament = CitireApartament();
+                        apartamente.Add(ultimulApartament);
                         Console.WriteLine("Apartamentul a fost adaugat!");
                         break;
 
@@ -135,6 +137,13 @@ namespace ApartManager
                         Chirias ch = CitireChirias();
                         chiriasi.Add(ch);
                         Console.WriteLine("Chiriasul a fost adaugat!");
+                        break;
+
+                    case "I":
+                        if (ultimulApartament != null)
+                            Console.WriteLine(ultimulApartament.Info());
+                        else
+                            Console.WriteLine("Nu a fost citit niciun apartament.");
                         break;
 
                     case "A":
