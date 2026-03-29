@@ -2,7 +2,7 @@ namespace ApartManager
 {
     class Program
     {
-        // lista de apartamnete
+        // lista de apartamente
         static List<Apartament> apartamente = new List<Apartament>();
         static List<Chirias> chiriasi = new List<Chirias>();
 
@@ -47,9 +47,14 @@ namespace ApartManager
             return new Chirias(nume, prenume, telefon, nrAp);
         }
 
-        // afisare apartamnete din lista
+        // afisare apartamente din lista
         static void AfisareApartamente(List<Apartament> lista)
         {
+            if (lista.Count == 0)
+            {
+                Console.WriteLine("Nu exista apartamente.");
+                return;
+            }
             for (int i = 0; i < lista.Count; i++)
             {
                 Console.WriteLine(lista[i].Info());
