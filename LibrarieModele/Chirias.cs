@@ -1,4 +1,4 @@
-namespace ApartManager
+namespace LibrarieModele
 {
     public class Chirias
     {
@@ -6,9 +6,7 @@ namespace ApartManager
         public string Prenume { get; set; }
         public string Telefon { get; set; }
         public int NumarApartament { get; set; }
-
-        // nume + prenume
-        public string NumeComplet => Nume + " " + Prenume;
+        public string NumeComplet=> Nume + " " + Prenume;
 
         public Chirias()
         {
@@ -17,7 +15,6 @@ namespace ApartManager
             Telefon = string.Empty;
             NumarApartament = 0;
         }
-
         public Chirias(string nume, string prenume, string telefon, int numarApartament)
         {
             Nume = nume;
@@ -26,10 +23,10 @@ namespace ApartManager
             NumarApartament = numarApartament;
         }
 
+        // afisare informatii chirias
         public string Info()
         {
-            string info = $"Chirias: {NumeComplet} | Telefon: {Telefon} | Apartament: {NumarApartament}";
-            return info;
+            return $"Chirias: {NumeComplet} | Tel: {Telefon} | Ap. {NumarApartament}" ;
         }
     }
 }
