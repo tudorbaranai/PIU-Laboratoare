@@ -10,7 +10,7 @@ namespace NivelStocareDate
         public AdministrareApartamenteFisierText(string caleFisier)
         {
             fisierApartamente = caleFisier + "_apartamente.txt";
-            fisierChiriasi = caleFisier + "_chiriasi.txt"
+            fisierChiriasi = caleFisier + "_chiriasi.txt";
 
             // cream fisierele daca nu exista
             Stream s1 = File.Open(fisierApartamente, FileMode.OpenOrCreate);

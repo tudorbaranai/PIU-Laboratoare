@@ -87,7 +87,7 @@ namespace LibrarieModele
             Suprafata = Convert.ToDouble(date[SUPRAFATA]);
             PretChirie = Convert.ToDouble(date[PRET]);
             Tip = (TipApartament)Convert.ToInt32(date[TIP]);
-            Facilitati = (FacilitatiApartament)Convert.ToInt32(date[FACILITATI])
+            Facilitati = (FacilitatiApartament)Convert.ToInt32(date[FACILITATI]);
         }
 
         //conversie obiect la sir pt scriere in fisier
