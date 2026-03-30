@@ -1,4 +1,4 @@
-using System.Configurations;
+using System.Configuration;
 
 namespace NivelStocareDate
 {
