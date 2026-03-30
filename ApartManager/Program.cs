@@ -5,7 +5,7 @@ namespace ApartManager
 {
     class Program
     {
-        static AdministrareApartamenteMemorie admin = new AdministrareApartamenteMemorie();
+        static IStocareData admin = StocareFactory.GetAdministratorStocare();
 
         static Apartament CitireApartament()
         {

@@ -2,7 +2,7 @@ using LibrarieModele;
 
 namespace NivelStocareDate
 {
-    public class AdministrareApartamenteMemorie
+    public class AdministrareApartamenteMemorie : IStocareData
     {
         private List<Apartament> apartamente = new List<Apartament>();
         private List<Chirias> chiriasi = new List<Chirias>();
