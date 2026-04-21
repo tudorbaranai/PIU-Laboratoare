@@ -32,5 +32,5 @@ PIU-Laboratoare/
 
 ## Tehnologii
 
-- C# / .NET 8
+- C# / .NET 10
 - Visual Studio 2022
