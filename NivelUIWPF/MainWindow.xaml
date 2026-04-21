@@ -1,0 +1,226 @@
+<Window x:Class="NivelUIWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NivelUIWPF"
+        mc:Ignorable="d"
+        Title="ApartManager" Height="780" Width="900">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <Label Content="_Numar apartament"
+                       Target="{Binding ElementName=txtNumar}"
+                       FontWeight="Bold"
+                       Padding="0"
+                       Margin="0,0,0,6"/>
+                <TextBox x:Name="txtNumar"
+                         Height="30"
+                         FontSize="14"
+                         Padding="8,0"
+                         VerticalContentAlignment="Center"
+                         MaxLength="5"/>
+                <TextBlock x:Name="tbErrNumar"
+                           Text=""
+                           FontSize="11"
+                           Foreground="Red"
+                           Margin="0,4,0,0"
+                           Visibility="Collapsed"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2">
+                <Label Content="_Etaj"
+                       Target="{Binding ElementName=txtEtaj}"
+                       FontWeight="Bold"
+                       Padding="0"
+                       Margin="0,0,0,6"/>
+                <TextBox x:Name="txtEtaj"
+                         Height="30"
+                         FontSize="14"
+                         Padding="8,0"
+                         VerticalContentAlignment="Center"
+                         MaxLength="3"/>
+                <TextBlock x:Name="tbErrEtaj"
+                           Text=""
+                           FontSize="11"
+                           Foreground="Red"
+                           Margin="0,4,0,0"
+                           Visibility="Collapsed"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <Label Content="_Suprafata (mp)"
+                       Target="{Binding ElementName=txtSuprafata}"
+                       FontWeight="Bold"
+                       Padding="0"
+                       Margin="0,0,0,6"/>
+                <TextBox x:Name="txtSuprafata"
+                         Height="30"
+                         FontSize="14"
+                         Padding="8,0"
+                         VerticalContentAlignment="Center"
+                         MaxLength="6"/>
+                <TextBlock x:Name="tbErrSuprafata"
+                           Text=""
+                           FontSize="11"
+                           Foreground="Red"
+                           Margin="0,4,0,0"
+                           Visibility="Collapsed"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2">
+                <Label Content="_Pret chirie (lei/luna)"
+                       Target="{Binding ElementName=txtPret}"
+                       FontWeight="Bold"
+                       Padding="0"
+                       Margin="0,0,0,6"/>
+                <TextBox x:Name="txtPret"
+                         Height="30"
+                         FontSize="14"
+                         Padding="8,0"
+                         VerticalContentAlignment="Center"
+                         MaxLength="8"/>
+                <TextBlock x:Name="tbErrPret"
+                           Text=""
+                           FontSize="11"
+                           Foreground="Red"
+                           Margin="0,4,0,0"
+                           Visibility="Collapsed"/>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Margin="0,0,0,10">
+            <Label Content="Tip apartament"
+                   FontWeight="Bold"
+                   Padding="0"
+                   Margin="0,0,0,6"/>
+            <StackPanel Orientation="Horizontal">
+                <RadioButton x:Name="rbGarsoniera"
+                             Content="Garsoniera"
+                             GroupName="TipAp"
+                             IsChecked="True"
+                             Margin="0,0,15,0"/>
+                <RadioButton x:Name="rbDouaCamere"
+                             Content="2 camere"
+                             GroupName="TipAp"
+                             Margin="0,0,15,0"/>
+                <RadioButton x:Name="rbTreiCamere"
+                             Content="3 camere"
+                             GroupName="TipAp"
+                             Margin="0,0,15,0"/>
+                <RadioButton x:Name="rbPatruCamere"
+                             Content="4 camere"
+                             GroupName="TipAp"
+                             Margin="0,0,15,0"/>
+                <RadioButton x:Name="rbPenthouse"
+                             Content="Penthouse"
+                             GroupName="TipAp"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Margin="0,0,0,10">
+            <Label Content="Facilitati"
+                   FontWeight="Bold"
+                   Padding="0"
+                   Margin="0,0,0,6"/>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox x:Name="cbBalcon" Content="Balcon" Margin="0,0,15,0"/>
+                <CheckBox x:Name="cbParcare" Content="Parcare" Margin="0,0,15,0"/>
+                <CheckBox x:Name="cbCentrala" Content="Centrala termica" Margin="0,0,15,0"/>
+                <CheckBox x:Name="cbAC" Content="Aer conditionat" Margin="0,0,15,0"/>
+                <CheckBox x:Name="cbLocJoaca" Content="Loc de joaca"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="4"
+                    Orientation="Horizontal"
+                    Margin="0,10,0,10">
+            <Button x:Name="btnSalveaza"
+                    Content="_Salveaza Apartament"
+                    Width="200"
+                    Height="32"
+                    Margin="0,0,10,0"
+                    Click="btnSalveaza_Click"/>
+            <Button x:Name="btnReseteaza"
+                    Content="_Reset"
+                    Width="120"
+                    Height="32"
+                    Click="btnReseteaza_Click"/>
+        </StackPanel>
+
+        <Separator Grid.Row="5" Margin="0,5,0,10"/>
+
+        <Grid Grid.Row="6" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Cautare dupa pret maxim:" FontWeight="Bold" Padding="0" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtPretMax"
+                     Grid.Column="1"
+                     Width="120"
+                     Height="28"
+                     FontSize="13"
+                     Padding="8,0"
+                     VerticalContentAlignment="Center"
+                     Margin="10,0,10,0"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button x:Name="btnCauta" Content="Cauta" Width="90" Height="28" Margin="0,0,8,0" Click="btnCauta_Click"/>
+                <Button x:Name="btnReset" Content="Toate" Width="90" Height="28" Click="btnResetCautare_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <Label x:Name="lblNrApartamente"
+               Grid.Row="7"
+               FontWeight="Bold"
+               Margin="0,0,0,6"/>
+
+        <DataGrid x:Name="dgApartamente"
+                Grid.Row="8"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                HeadersVisibility="Column"
+                GridLinesVisibility="All"
+                AlternatingRowBackground="#F5F5F5"
+                RowHeight="26">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Numar" Binding="{Binding Numar}" Width="70"/>
+                <DataGridTextColumn Header="Etaj" Binding="{Binding Etaj}" Width="60"/>
+                <DataGridTextColumn Header="Suprafata" Binding="{Binding Suprafata}" Width="80"/>
+                <DataGridTextColumn Header="Pret/luna" Binding="{Binding PretChirie}" Width="90"/>
+                <DataGridTextColumn Header="Chirie an" Binding="{Binding ChirieAnuala}" Width="90"/>
+                <DataGridTextColumn Header="Tip" Binding="{Binding Tip}" Width="100"/>
+                <DataGridTextColumn Header="Facilitati" Binding="{Binding Facilitati}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
