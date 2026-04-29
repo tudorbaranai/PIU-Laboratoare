@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NivelUIWPF"
         mc:Ignorable="d"
-        Title="ApartManager" Height="780" Width="900">
+        Title="ApartManager" Height="900" Width="900">
     <Grid Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -197,13 +198,40 @@
             </StackPanel>
         </Grid>
 
+        <!-- COMBOBOX - Filtrare dupa Tip -->
+        <Grid Grid.Row="7" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <Label Content="Filtreaza dupa tip apartament:" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                <ComboBox x:Name="cbTipApartament" Height="30" Padding="8" FontSize="12">
+                    <ComboBoxItem Content="Toate tipurile" IsSelected="True"/>
+                    <ComboBoxItem Content="Garsoniera"/>
+                    <ComboBoxItem Content="2 camere"/>
+                    <ComboBoxItem Content="3 camere"/>
+                    <ComboBoxItem Content="4 camere"/>
+                    <ComboBoxItem Content="Penthouse"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- LISTBOX - Afisare apartamente cu facilitati -->
+            <StackPanel Grid.Column="2">
+                <Label Content="Apartamente cu facilitati:" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                <ListBox x:Name="lbApartamenteFacilitati" Height="80" Background="#F9F9F9" BorderBrush="#CCCCCC" FontSize="11" Padding="8"/>
+            </StackPanel>
+        </Grid>
+
         <Label x:Name="lblNrApartamente"
-               Grid.Row="7"
+               Grid.Row="8"
                FontWeight="Bold"
                Margin="0,0,0,6"/>
 
         <DataGrid x:Name="dgApartamente"
-                Grid.Row="8"
+                Grid.Row="9"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
                 CanUserAddRows="False"

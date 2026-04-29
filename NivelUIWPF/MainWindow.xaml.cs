@@ -20,7 +20,68 @@ namespace NivelUIWPF
         {
             InitializeComponent();
             adminApartamente = StocareFactory.GetAdministratorStocare();
+            InitializeComboBox();
             AfiseazaApartamente(adminApartamente.GetApartamente());
+            ActualizeazaListBoxFacilitati();
+        }
+
+        // Initializeaza ComboBox si atribuie event handler
+        private void InitializeComboBox()
+        {
+            cbTipApartament.SelectionChanged += CbTipApartament_SelectionChanged;
+        }
+
+        // Event handler pentru schimbarea selectiei din ComboBox
+        private void CbTipApartament_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int selectedIndex = cbTipApartament.SelectedIndex;
+            
+            if (selectedIndex == 0) // "Toate tipurile" - afiseaza toti apartamentele
+            {
+                AfiseazaApartamente(adminApartamente.GetApartamente());
+            }
+            else
+            {
+                // Converteste indexul selectat in TipApartament enum
+                TipApartament tip = (TipApartament)selectedIndex;
+                var filtrate = adminApartamente.GetApartamente()
+                    .Where(a => a.Tip == tip)
+                    .ToList();
+                AfiseazaApartamente(filtrate);
+            }
+            
+            // Refresh ListBox-ul dupa filtrare
+            ActualizeazaListBoxFacilitati();
+        }
+
+        // Actualizeaza ListBox-ul cu apartamentele care au facilitati
+        private void ActualizeazaListBoxFacilitati()
+        {
+            // Sterge toate elementele din ListBox
+            lbApartamenteFacilitati.Items.Clear();
+            
+            // Obtine apartamentele curente afisate (dupa filtrare)
+            var apartamente = dgApartamente.ItemsSource as List<Apartament>;
+            
+            if (apartamente != null)
+            {
+                // Itereaza prin apartamentele curente
+                foreach (var ap in apartamente)
+                {
+                    // Adauga in ListBox doar apartamentele cu facilitati
+                    if (ap.Facilitati != FacilitatiApartament.Niciuna)
+                    {
+                        string facilitatiText = $"Ap. {ap.Numar}: {ap.Facilitati}";
+                        lbApartamenteFacilitati.Items.Add(facilitatiText);
+                    }
+                }
+                
+                // Daca nu exista apartamente cu facilitati, afiseaza mesaj
+                if (lbApartamenteFacilitati.Items.Count == 0)
+                {
+                    lbApartamenteFacilitati.Items.Add("Niciun apartament cu facilitati");
+                }
+            }
         }
 
         private void AfiseazaApartamente(List<Apartament> lista)
@@ -51,6 +112,8 @@ namespace NivelUIWPF
             adminApartamente.AddApartament(ap);
 
             AfiseazaApartamente(adminApartamente.GetApartamente());
+            ActualizeazaListBoxFacilitati(); // Refresh ListBox dupa adaugare
+            btnReseteaza_Click(null, null); // Reseteaza formularul
         }
 
         private void btnReseteaza_Click(object sender, RoutedEventArgs e)
@@ -81,6 +144,7 @@ namespace NivelUIWPF
                 double pretMax = double.Parse(s);
                 var rezultat = adminApartamente.CautaDupaPretMaxim(pretMax);
                 AfiseazaApartamente(rezultat);
+                ActualizeazaListBoxFacilitati();
             }
             catch(System.FormatException)
             {
@@ -91,7 +155,9 @@ namespace NivelUIWPF
         private void btnResetCautare_Click(object sender, RoutedEventArgs e)
         {
             txtPretMax.Clear();
+            cbTipApartament.SelectedIndex = 0; // Reseteaza ComboBox
             AfiseazaApartamente(adminApartamente.GetApartamente());
+            ActualizeazaListBoxFacilitati();
         }
 
         private TipApartament GetTipSelectat()
