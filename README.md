@@ -29,6 +29,7 @@ PIU-Laboratoare/
 | Nr. | Tema | Descriere |
 |-----|------|-----------|
 | 1 | Calcul salariu angajat | Citire date, conversii de tip, structuri conditionale |
+| 6 | WPF - prima fereastra | Label-uri, culori, fonturi si fereastra maximizata |
 
 ## Tehnologii
 

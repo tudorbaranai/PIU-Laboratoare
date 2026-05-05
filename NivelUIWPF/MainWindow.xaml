@@ -5,7 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NivelUIWPF"
         mc:Ignorable="d"
-        Title="ApartManager" Height="900" Width="900">
+        Title="Lab 6 - ApartManager"
+        Height="450"
+        Width="800"
+        WindowState="Maximized"
+        WindowStyle="ToolWindow"
+        Background="#DDEAF6">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#1D3557"/>
+        </Style>
+    </Window.Resources>
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
