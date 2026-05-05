@@ -21,7 +21,6 @@ namespace NivelUIWPF
             InitializeComponent();
             adminApartamente = StocareFactory.GetAdministratorStocare();
             InitializeComboBox();
-            InitializeFormaFinantareListBox();
             AfiseazaApartamente(adminApartamente.GetApartamente());
             ActualizeazaListBoxFacilitati();
         }
@@ -30,17 +29,6 @@ namespace NivelUIWPF
         private void InitializeComboBox()
         {
             cbTipApartament.SelectionChanged += CbTipApartament_SelectionChanged;
-        }
-
-        // Initializeaza ListBox-ul cu forme de finanțare
-        private void InitializeFormaFinantareListBox()
-        {
-            lbFormaFinantare.Items.Clear();
-            foreach (string forma in Student.FormeFinantare)
-            {
-                lbFormaFinantare.Items.Add(forma);
-            }
-            lbFormaFinantare.SelectedIndex = 0; // Selectează implicit "cu taxa"
         }
 
         // Event handler pentru schimbarea selectiei din ComboBox
@@ -170,51 +158,6 @@ namespace NivelUIWPF
             cbTipApartament.SelectedIndex = 0; // Reseteaza ComboBox
             AfiseazaApartamente(adminApartamente.GetApartamente());
             ActualizeazaListBoxFacilitati();
-        }
-
-        // Adaugă Student
-        private void btnAddStudent_Click(object sender, RoutedEventArgs e)
-        {
-            string sId = txtIdStudent.Text.Trim();
-            string sNume = txtNumeStudent.Text.Trim();
-            string sPrenume = txtPrenumeStudent.Text.Trim();
-
-            if (string.IsNullOrEmpty(sId) || string.IsNullOrEmpty(sNume) || string.IsNullOrEmpty(sPrenume))
-            {
-                MessageBox.Show("Completati toate campurile!", "Atentie", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (!int.TryParse(sId, out int id))
-            {
-                MessageBox.Show("ID-ul trebuie sa fie un numar!", "Eroare", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (lbFormaFinantare.SelectedIndex == -1)
-            {
-                MessageBox.Show("Selectati forma de finantare!", "Atentie", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            string formaFinantare = (string)lbFormaFinantare.SelectedItem;
-            Student student = new Student(id, sNume, sPrenume, formaFinantare);
-
-            adminApartamente.AddStudent(student);
-            MessageBox.Show("Student adaugat cu succes!", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            // Reseteaza campurile
-            txtIdStudent.Clear();
-            txtNumeStudent.Clear();
-            txtPrenumeStudent.Clear();
-            lbFormaFinantare.SelectedIndex = 0;
-        }
-
-        // Deschide fereastra pentru modificarea notelor
-        private void btnModificaNoteStudent_Click(object sender, RoutedEventArgs e)
-        {
-            ModificaNoteWindow window = new ModificaNoteWindow(adminApartamente);
-            window.Show();
         }
 
         private TipApartament GetTipSelectat()
