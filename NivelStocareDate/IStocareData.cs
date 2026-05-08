@@ -10,6 +10,9 @@ namespace NivelStocareDate
 
         void AddChirias(Chirias ch);
         List<Chirias> GetChiriasi();
+        // lab 10 - CRUD complet pt chirias
+        void ModificaChirias(string numeOriginal, string prenumeOriginal, Chirias chiriasNou);
+        void StergeChirias(string nume, string prenume);
 
         Apartament CautaDupaNumar(int numar);
         List<Apartament> CautaDupaEtaj(int etaj);

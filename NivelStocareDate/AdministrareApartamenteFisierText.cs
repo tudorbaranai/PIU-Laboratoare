@@ -71,6 +71,47 @@ namespace NivelStocareDate
             }
         }
 
+        // lab 10 - update chirias: rescriu fisierul
+        public void ModificaChirias(string numeOriginal, string prenumeOriginal, Chirias chiriasNou)
+        {
+            var toti = GetChiriasi();
+            using(StreamWriter sw = new StreamWriter(fisierChiriasi, false))
+            {
+                bool modificat = false;
+                foreach(Chirias ch in toti)
+                {
+                    if(!modificat && ch.Nume == numeOriginal && ch.Prenume == prenumeOriginal)
+                    {
+                        sw.WriteLine(chiriasNou.ConversieLaSirPentruFisier());
+                        modificat = true;
+                    }
+                    else
+                    {
+                        sw.WriteLine(ch.ConversieLaSirPentruFisier());
+                    }
+                }
+            }
+        }
+
+        // lab 10 - delete chirias: rescriu fisierul fara cel sters
+        public void StergeChirias(string nume, string prenume)
+        {
+            var toti = GetChiriasi();
+            using(StreamWriter sw = new StreamWriter(fisierChiriasi, false))
+            {
+                bool sters = false;
+                foreach(Chirias ch in toti)
+                {
+                    if(!sters && ch.Nume == nume && ch.Prenume == prenume)
+                    {
+                        sters = true;
+                        continue;
+                    }
+                    sw.WriteLine(ch.ConversieLaSirPentruFisier());
+                }
+            }
+        }
+
         public List<Chirias> GetChiriasi()
         {
             List<Chirias> chiriasi = new List<Chirias>();

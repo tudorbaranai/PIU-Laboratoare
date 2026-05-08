@@ -55,6 +55,10 @@
                         Content="Modifica"
                         Style="{StaticResource MeniuButton}"
                         Click="btnMeniuModifica_Click"/>
+                <Button x:Name="btnMeniuChiriasi"
+                        Content="Chiriasi"
+                        Style="{StaticResource MeniuButton}"
+                        Click="btnMeniuChiriasi_Click"/>
             </StackPanel>
         </Border>
 
@@ -536,6 +540,155 @@
                        Foreground="#1E7832"
                        FontWeight="Bold"
                        Margin="0,5,0,10"/>
+            </Grid>
+
+            <!-- PANOU CHIRIASI - CRUD complet (lab 10) -->
+            <Grid x:Name="pnlChiriasi" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0"
+                       Content="Gestiune chiriasi (CRUD + Binding)"
+                       FontWeight="Bold"
+                       FontSize="18"
+                       Margin="0,0,0,15"/>
+
+                <!-- form cu TwoWay binding la ChiriasCurent -->
+                <Grid Grid.Row="1" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Nume" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                        <TextBox Height="30"
+                                 FontSize="14"
+                                 Padding="8,0"
+                                 VerticalContentAlignment="Center"
+                                 MaxLength="30"
+                                 Text="{Binding ChiriasCurent.Nume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <Label Content="Prenume" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                        <TextBox Height="30"
+                                 FontSize="14"
+                                 Padding="8,0"
+                                 VerticalContentAlignment="Center"
+                                 MaxLength="30"
+                                 Text="{Binding ChiriasCurent.Prenume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="2" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Telefon" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                        <TextBox Height="30"
+                                 FontSize="14"
+                                 Padding="8,0"
+                                 VerticalContentAlignment="Center"
+                                 MaxLength="20"
+                                 Text="{Binding ChiriasCurent.Telefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <Label Content="Numar apartament" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                        <TextBox Height="30"
+                                 FontSize="14"
+                                 Padding="8,0"
+                                 VerticalContentAlignment="Center"
+                                 MaxLength="5"
+                                 Text="{Binding ChiriasCurent.NumarApartament, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- preview live cu OneWay binding la NumeComplet (calculat) - se updateaza pe masura ce tastezi -->
+                <TextBlock Grid.Row="3"
+                           Text="{Binding ChiriasCurent.NumeComplet, StringFormat='Nume complet: {0}'}"
+                           FontStyle="Italic"
+                           FontSize="13"
+                           Foreground="#555555"
+                           Margin="0,0,0,10"/>
+
+                <!-- butoane CRUD -->
+                <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,5,0,10">
+                    <Button x:Name="btnAdaugaChirias"
+                            Content="Adauga"
+                            Width="110"
+                            Height="32"
+                            Margin="0,0,8,0"
+                            Background="#1E7832"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="btnAdaugaChirias_Click"/>
+                    <Button x:Name="btnModificaChirias"
+                            Content="Modifica"
+                            Width="110"
+                            Height="32"
+                            Margin="0,0,8,0"
+                            Background="#1D3557"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="btnModificaChirias_Click"/>
+                    <Button x:Name="btnStergeChirias"
+                            Content="Sterge"
+                            Width="110"
+                            Height="32"
+                            Margin="0,0,8,0"
+                            Background="#A02828"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="btnStergeChirias_Click"/>
+                    <Button x:Name="btnResetChirias"
+                            Content="Reset"
+                            Width="100"
+                            Height="32"
+                            Click="btnResetChirias_Click"/>
+                </StackPanel>
+
+                <Label x:Name="lblMesajChirias"
+                       Grid.Row="5"
+                       FontWeight="Bold"
+                       Margin="0,0,0,8"/>
+
+                <!-- BINDING ELEMENT-TO-ELEMENT: nr de chiriasi din DataGrid (exemplu lab 10 sectiunea 7) -->
+                <Label Grid.Row="6"
+                       Content="{Binding ElementName=dgChiriasi, Path=Items.Count, StringFormat='Numar chiriasi: {0}'}"
+                       FontWeight="Bold"
+                       Foreground="#1D3557"
+                       Margin="0,0,0,8"/>
+
+                <DataGrid x:Name="dgChiriasi"
+                          Grid.Row="7"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="All"
+                          AlternatingRowBackground="#F5F5F5"
+                          RowHeight="26"
+                          SelectionMode="Single"
+                          SelectionChanged="dgChiriasi_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nume" Binding="{Binding Nume}" Width="130"/>
+                        <DataGridTextColumn Header="Prenume" Binding="{Binding Prenume}" Width="130"/>
+                        <DataGridTextColumn Header="Telefon" Binding="{Binding Telefon}" Width="130"/>
+                        <DataGridTextColumn Header="Nr. apartament" Binding="{Binding NumarApartament}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </Grid>
     </DockPanel>

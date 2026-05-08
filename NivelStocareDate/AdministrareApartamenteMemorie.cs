@@ -31,6 +31,32 @@ namespace NivelStocareDate
             chiriasi.Add(ch);
         }
 
+        // lab 10 - update chirias
+        public void ModificaChirias(string numeOriginal, string prenumeOriginal, Chirias chiriasNou)
+        {
+            for(int i = 0; i < chiriasi.Count; i++)
+            {
+                if(chiriasi[i].Nume == numeOriginal && chiriasi[i].Prenume == prenumeOriginal)
+                {
+                    chiriasi[i] = chiriasNou;
+                    return;
+                }
+            }
+        }
+
+        // lab 10 - delete chirias
+        public void StergeChirias(string nume, string prenume)
+        {
+            for(int i = 0; i < chiriasi.Count; i++)
+            {
+                if(chiriasi[i].Nume == nume && chiriasi[i].Prenume == prenume)
+                {
+                    chiriasi.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+
         public List<Apartament> GetApartamente()
         {
             return apartamente;

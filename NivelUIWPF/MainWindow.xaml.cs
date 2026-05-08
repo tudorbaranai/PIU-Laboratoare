@@ -1,12 +1,15 @@
 using LibrarieModele;
 using NivelStocareDate;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace NivelUIWPF
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         //constante pt limite (tema acasa lab 7)
         private const int NUMAR_MAXIM = 9999;
@@ -29,14 +32,39 @@ namespace NivelUIWPF
 
         private IStocareData adminApartamente;
 
+        // lab 10 - colectie observabila pt chiriasi
+        private ObservableCollection<Chirias> chiriasiAfisati = new ObservableCollection<Chirias>();
+
+        // lab 10 - chirias curent legat prin Binding la formular
+        private Chirias chiriasCurent;
+        public Chirias ChiriasCurent
+        {
+            get => chiriasCurent;
+            set
+            {
+                chiriasCurent = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
             adminApartamente = StocareFactory.GetAdministratorStocare();
             InitializeComboBox();
             InitializeControaleLab9();
+            // lab 10 - DataContext = this pt ca Binding-urile sa gaseasca ChiriasCurent
+            DataContext = this;
+            ChiriasCurent = new Chirias();
             AfiseazaApartamente(adminApartamente.GetApartamente());
             ActualizeazaListBoxFacilitati();
+        }
+
+        // INotifyPropertyChanged (lab 10)
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         // populeaza ListBox-urile noi si seteaza data implicita (lab 9)
@@ -315,12 +343,13 @@ namespace NivelUIWPF
             tb.Focus();
         }
 
-        // meniu - schimbare intre administrare / cautare / modificare (lab 8 + lab 9)
+        // meniu - schimbare intre administrare / cautare / modificare / chiriasi (lab 8-10)
         private void btnMeniuAdministrare_Click(object sender, RoutedEventArgs e)
         {
             pnlAdministrare.Visibility = Visibility.Visible;
             pnlCautare.Visibility = Visibility.Collapsed;
             pnlModifica.Visibility = Visibility.Collapsed;
+            pnlChiriasi.Visibility = Visibility.Collapsed;
         }
 
         private void btnMeniuCautare_Click(object sender, RoutedEventArgs e)
@@ -328,6 +357,7 @@ namespace NivelUIWPF
             pnlAdministrare.Visibility = Visibility.Collapsed;
             pnlCautare.Visibility = Visibility.Visible;
             pnlModifica.Visibility = Visibility.Collapsed;
+            pnlChiriasi.Visibility = Visibility.Collapsed;
             // resetez ce era inainte
             lblMesajCautare.Content = "";
             dgRezultatCautare.ItemsSource = null;
@@ -341,6 +371,7 @@ namespace NivelUIWPF
             pnlAdministrare.Visibility = Visibility.Collapsed;
             pnlCautare.Visibility = Visibility.Collapsed;
             pnlModifica.Visibility = Visibility.Visible;
+            pnlChiriasi.Visibility = Visibility.Collapsed;
 
             // populez ComboBox-ul cu apartamentele existente
             cmbApartamenteModifica.ItemsSource = null;
@@ -499,6 +530,142 @@ namespace NivelUIWPF
                 lblMesajCautare.Foreground = new SolidColorBrush(Color.FromRgb(30, 120, 50));
                 dgRezultatCautare.ItemsSource = new List<Apartament> { ap };
             }
+        }
+
+        // ====================== LAB 10 - CRUD chiriasi cu binding ======================
+
+        // pt modify/delete trebuie sa stiu Nume+Prenume initiale (user-ul poate sa le fi schimbat in form)
+        private string numeOriginalChirias = string.Empty;
+        private string prenumeOriginalChirias = string.Empty;
+
+        private void btnMeniuChiriasi_Click(object sender, RoutedEventArgs e)
+        {
+            pnlAdministrare.Visibility = Visibility.Collapsed;
+            pnlCautare.Visibility = Visibility.Collapsed;
+            pnlModifica.Visibility = Visibility.Collapsed;
+            pnlChiriasi.Visibility = Visibility.Visible;
+
+            ReincarcaChiriasi();
+            ResetFormularChirias();
+            lblMesajChirias.Content = "";
+        }
+
+        private void ReincarcaChiriasi()
+        {
+            // ObservableCollection - se pastreaza referinta, doar continutul se schimba
+            chiriasiAfisati.Clear();
+            foreach(Chirias ch in adminApartamente.GetChiriasi())
+                chiriasiAfisati.Add(ch);
+
+            // setez ItemsSource doar prima data
+            if(dgChiriasi.ItemsSource == null)
+                dgChiriasi.ItemsSource = chiriasiAfisati;
+        }
+
+        private void ResetFormularChirias()
+        {
+            ChiriasCurent = new Chirias();
+            numeOriginalChirias = string.Empty;
+            prenumeOriginalChirias = string.Empty;
+            dgChiriasi.SelectedItem = null;
+        }
+
+        private void dgChiriasi_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Chirias selectat = dgChiriasi.SelectedItem as Chirias;
+            if(selectat == null)
+                return;
+
+            // pastrez referinta originala pt modify/delete
+            numeOriginalChirias = selectat.Nume;
+            prenumeOriginalChirias = selectat.Prenume;
+            // copie ca sa nu modific direct randul afisat cand user-ul tasteaza
+            ChiriasCurent = new Chirias(selectat.Nume, selectat.Prenume, selectat.Telefon, selectat.NumarApartament);
+        }
+
+        private void btnAdaugaChirias_Click(object sender, RoutedEventArgs e)
+        {
+            if(string.IsNullOrWhiteSpace(ChiriasCurent.Nume) || string.IsNullOrWhiteSpace(ChiriasCurent.Prenume))
+            {
+                AfiseazaMesajChirias("Nume si prenume sunt obligatorii!", false);
+                return;
+            }
+
+            Chirias chNou = new Chirias(
+                ChiriasCurent.Nume.Trim(),
+                ChiriasCurent.Prenume.Trim(),
+                ChiriasCurent.Telefon ?? "",
+                ChiriasCurent.NumarApartament);
+
+            adminApartamente.AddChirias(chNou);
+            chiriasiAfisati.Add(chNou); // observable se reflecta automat in datagrid + label de count
+
+            AfiseazaMesajChirias($"Chirias {chNou.NumeComplet} adaugat!", true);
+            ResetFormularChirias();
+        }
+
+        private void btnModificaChirias_Click(object sender, RoutedEventArgs e)
+        {
+            if(string.IsNullOrWhiteSpace(numeOriginalChirias))
+            {
+                AfiseazaMesajChirias("Selecteaza un chirias din tabel pentru modificare!", false);
+                return;
+            }
+            if(string.IsNullOrWhiteSpace(ChiriasCurent.Nume) || string.IsNullOrWhiteSpace(ChiriasCurent.Prenume))
+            {
+                AfiseazaMesajChirias("Nume si prenume sunt obligatorii!", false);
+                return;
+            }
+
+            Chirias chiriasNou = new Chirias(
+                ChiriasCurent.Nume.Trim(),
+                ChiriasCurent.Prenume.Trim(),
+                ChiriasCurent.Telefon ?? "",
+                ChiriasCurent.NumarApartament);
+
+            adminApartamente.ModificaChirias(numeOriginalChirias, prenumeOriginalChirias, chiriasNou);
+            ReincarcaChiriasi();
+
+            AfiseazaMesajChirias($"Chirias modificat: {chiriasNou.NumeComplet}", true);
+            ResetFormularChirias();
+        }
+
+        private void btnStergeChirias_Click(object sender, RoutedEventArgs e)
+        {
+            if(string.IsNullOrWhiteSpace(numeOriginalChirias))
+            {
+                AfiseazaMesajChirias("Selecteaza un chirias din tabel pentru stergere!", false);
+                return;
+            }
+
+            var raspuns = MessageBox.Show(
+                $"Esti sigur ca vrei sa stergi chiriasul {numeOriginalChirias} {prenumeOriginalChirias}?",
+                "Confirmare stergere",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if(raspuns != MessageBoxResult.Yes)
+                return;
+
+            adminApartamente.StergeChirias(numeOriginalChirias, prenumeOriginalChirias);
+            ReincarcaChiriasi();
+
+            AfiseazaMesajChirias($"Chirias sters: {numeOriginalChirias} {prenumeOriginalChirias}", true);
+            ResetFormularChirias();
+        }
+
+        private void btnResetChirias_Click(object sender, RoutedEventArgs e)
+        {
+            ResetFormularChirias();
+            lblMesajChirias.Content = "";
+        }
+
+        private void AfiseazaMesajChirias(string text, bool succes)
+        {
+            lblMesajChirias.Content = text;
+            lblMesajChirias.Foreground = succes
+                ? new SolidColorBrush(Color.FromRgb(30, 120, 50))
+                : new SolidColorBrush(Color.FromRgb(160, 40, 40));
         }
     }
 }
