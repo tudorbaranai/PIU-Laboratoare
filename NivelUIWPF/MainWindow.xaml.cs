@@ -277,5 +277,57 @@ namespace NivelUIWPF
             err.Visibility = Visibility.Visible;
             tb.Focus();
         }
+
+        // meniu - schimbare intre administrare si cautare (lab 8)
+        private void btnMeniuAdministrare_Click(object sender, RoutedEventArgs e)
+        {
+            pnlAdministrare.Visibility = Visibility.Visible;
+            pnlCautare.Visibility = Visibility.Collapsed;
+        }
+
+        private void btnMeniuCautare_Click(object sender, RoutedEventArgs e)
+        {
+            pnlAdministrare.Visibility = Visibility.Collapsed;
+            pnlCautare.Visibility = Visibility.Visible;
+            // resetez ce era inainte
+            lblMesajCautare.Content = "";
+            dgRezultatCautare.ItemsSource = null;
+            txtCautaNumar.Clear();
+            txtCautaNumar.Focus();
+        }
+
+        // cautare apartament dupa numar (lab 8)
+        private void btnCautaDupaNumar_Click(object sender, RoutedEventArgs e)
+        {
+            // resetez culoarea mesajului
+            lblMesajCautare.Foreground = new SolidColorBrush(Color.FromRgb(160, 40, 40));
+
+            string s = txtCautaNumar.Text.Trim();
+            if(string.IsNullOrEmpty(s))
+            {
+                lblMesajCautare.Content = "Introduceti un numar de apartament!";
+                dgRezultatCautare.ItemsSource = null;
+                return;
+            }
+            if(!int.TryParse(s, out int numar) || numar <= 0)
+            {
+                lblMesajCautare.Content = "Numarul trebuie sa fie un intreg pozitiv!";
+                dgRezultatCautare.ItemsSource = null;
+                return;
+            }
+
+            Apartament ap = adminApartamente.CautaDupaNumar(numar);
+            if(ap == null)
+            {
+                lblMesajCautare.Content = $"Nu s-a gasit niciun apartament cu numarul {numar}";
+                dgRezultatCautare.ItemsSource = null;
+            }
+            else
+            {
+                lblMesajCautare.Content = "Apartament gasit:";
+                lblMesajCautare.Foreground = new SolidColorBrush(Color.FromRgb(30, 120, 50));
+                dgRezultatCautare.ItemsSource = new List<Apartament> { ap };
+            }
+        }
     }
 }
