@@ -6,6 +6,7 @@ namespace NivelStocareDate
     {
         void AddApartament(Apartament ap);
         List<Apartament> GetApartamente();
+        void ModificaApartament(Apartament apModificat);
 
         void AddChirias(Chirias ch);
         List<Chirias> GetChiriasi();

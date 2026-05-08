@@ -21,10 +21,29 @@ namespace NivelStocareDate
 
         public void AddApartament(Apartament ap)
         {
+            ap.DataActualizare = DateTime.Today;
             //scriere in fisier in modul append
             using(StreamWriter sw = new StreamWriter(fisierApartamente, true))
             {
                 sw.WriteLine(ap.ConversieLaSirPentruFisier());
+            }
+        }
+
+        // lab 9 - modificare apartament: rescrie tot fisierul cu apartamentul modificat
+        public void ModificaApartament(Apartament apModificat)
+        {
+            var toate = GetApartamente();
+            apModificat.DataActualizare = DateTime.Today;
+
+            using(StreamWriter sw = new StreamWriter(fisierApartamente, false))
+            {
+                foreach(Apartament ap in toate)
+                {
+                    if(ap.Numar == apModificat.Numar)
+                        sw.WriteLine(apModificat.ConversieLaSirPentruFisier());
+                    else
+                        sw.WriteLine(ap.ConversieLaSirPentruFisier());
+                }
             }
         }
 

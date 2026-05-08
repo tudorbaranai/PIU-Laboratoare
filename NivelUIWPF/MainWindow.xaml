@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NivelUIWPF"
         mc:Ignorable="d"
-        Title="Lab 8 - ApartManager"
-        Height="600"
-        Width="1000"
-        MinWidth="700"
-        MinHeight="450"
+        Title="Lab 9 - ApartManager"
+        Height="650"
+        Width="1050"
+        MinWidth="750"
+        MinHeight="500"
         WindowState="Maximized"
         WindowStyle="ToolWindow"
         Background="#DDEAF6">
@@ -51,14 +51,19 @@
                         Content="Cauta"
                         Style="{StaticResource MeniuButton}"
                         Click="btnMeniuCautare_Click"/>
+                <Button x:Name="btnMeniuModifica"
+                        Content="Modifica"
+                        Style="{StaticResource MeniuButton}"
+                        Click="btnMeniuModifica_Click"/>
             </StackPanel>
         </Border>
 
-        <!-- zona de continut, schimba intre administrare si cautare -->
+        <!-- zona de continut, schimba intre administrare / cautare / modificare -->
         <Grid>
             <!-- PANOU ADMINISTRARE (default vizibil) -->
             <Grid x:Name="pnlAdministrare">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -211,7 +216,40 @@
                     </WrapPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Row="4"
+                <!-- LAB 9: data adaugare (DatePicker) + tip finantare (ListBox) -->
+                <Grid Grid.Row="4" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Data adaugare"
+                               FontWeight="Bold"
+                               Padding="0"
+                               Margin="0,0,0,6"/>
+                        <DatePicker x:Name="dpDataAdaugare"
+                                    Height="30"
+                                    SelectedDateFormat="Short"
+                                    FontSize="13"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <Label Content="Tip finantare"
+                               FontWeight="Bold"
+                               Padding="0"
+                               Margin="0,0,0,6"/>
+                        <ListBox x:Name="lbFinantareAdd"
+                                 Height="65"
+                                 SelectionMode="Single"
+                                 FontSize="13"
+                                 Background="#F9F9F9"
+                                 BorderBrush="#CCCCCC"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="5"
                             Orientation="Horizontal"
                             Margin="0,10,0,10">
                     <Button x:Name="btnSalveaza"
@@ -227,9 +265,9 @@
                             Click="btnReseteaza_Click"/>
                 </StackPanel>
 
-                <Separator Grid.Row="5" Margin="0,5,0,10"/>
+                <Separator Grid.Row="6" Margin="0,5,0,10"/>
 
-                <Grid Grid.Row="6" Margin="0,0,0,10">
+                <Grid Grid.Row="7" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -251,7 +289,7 @@
                 </Grid>
 
                 <!-- COMBOBOX - Filtrare dupa Tip -->
-                <Grid Grid.Row="7" Margin="0,0,0,10">
+                <Grid Grid.Row="8" Margin="0,0,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="20"/>
@@ -278,12 +316,12 @@
                 </Grid>
 
                 <Label x:Name="lblNrApartamente"
-                       Grid.Row="8"
+                       Grid.Row="9"
                        FontWeight="Bold"
                        Margin="0,0,0,6"/>
 
                 <DataGrid x:Name="dgApartamente"
-                        Grid.Row="9"
+                        Grid.Row="10"
                         AutoGenerateColumns="False"
                         IsReadOnly="True"
                         CanUserAddRows="False"
@@ -297,9 +335,10 @@
                         <DataGridTextColumn Header="Etaj" Binding="{Binding Etaj}" Width="60"/>
                         <DataGridTextColumn Header="Suprafata" Binding="{Binding Suprafata}" Width="80"/>
                         <DataGridTextColumn Header="Pret/luna" Binding="{Binding PretChirie}" Width="90"/>
-                        <DataGridTextColumn Header="Chirie an" Binding="{Binding ChirieAnuala}" Width="90"/>
                         <DataGridTextColumn Header="Tip" Binding="{Binding Tip}" Width="100"/>
-                        <DataGridTextColumn Header="Facilitati" Binding="{Binding Facilitati}" Width="*"/>
+                        <DataGridTextColumn Header="Facilitati" Binding="{Binding Facilitati}" Width="150"/>
+                        <DataGridTextColumn Header="Adaugat" Binding="{Binding DataAdaugare, StringFormat=dd.MM.yyyy}" Width="90"/>
+                        <DataGridTextColumn Header="Finantare" Binding="{Binding TipFinantare}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -368,8 +407,135 @@
                         <DataGridTextColumn Header="Pret/luna" Binding="{Binding PretChirie}" Width="90"/>
                         <DataGridTextColumn Header="Tip" Binding="{Binding Tip}" Width="100"/>
                         <DataGridTextColumn Header="Facilitati" Binding="{Binding Facilitati}" Width="*"/>
+                        <DataGridTextColumn Header="Finantare" Binding="{Binding TipFinantare}" Width="100"/>
                     </DataGrid.Columns>
                 </DataGrid>
+            </Grid>
+
+            <!-- PANOU MODIFICARE (lab 9) -->
+            <Grid x:Name="pnlModifica" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0"
+                       Content="Modifica apartament existent"
+                       FontWeight="Bold"
+                       FontSize="18"
+                       Margin="0,0,0,15"/>
+
+                <!-- ComboBox cu apartamentele existente -->
+                <StackPanel Grid.Row="1" Margin="0,0,0,15">
+                    <Label Content="Selecteaza apartamentul:" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="cmbApartamenteModifica"
+                              Height="30"
+                              FontSize="13"
+                              DisplayMemberPath="AfisareScurta"
+                              SelectionChanged="cmbApartamenteModifica_SelectionChanged"/>
+                </StackPanel>
+
+                <Grid Grid.Row="2" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Etaj" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                        <TextBox x:Name="txtEtajMod" Height="30" FontSize="14" Padding="8,0" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <Label Content="Suprafata (mp)" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                        <TextBox x:Name="txtSuprafataMod" Height="30" FontSize="14" Padding="8,0" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="3" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Pret chirie" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                        <TextBox x:Name="txtPretMod" Height="30" FontSize="14" Padding="8,0" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <Label Content="Data adaugare" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                        <DatePicker x:Name="dpDataAdaugareMod" Height="30" FontSize="13" SelectedDateFormat="Short"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="4" Margin="0,0,0,10">
+                    <Label Content="Tip apartament" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                    <WrapPanel>
+                        <RadioButton x:Name="rbGarsonieraMod" Content="Garsoniera" GroupName="TipApMod" Margin="0,0,15,5"/>
+                        <RadioButton x:Name="rbDouaCamereMod" Content="2 camere" GroupName="TipApMod" Margin="0,0,15,5"/>
+                        <RadioButton x:Name="rbTreiCamereMod" Content="3 camere" GroupName="TipApMod" Margin="0,0,15,5"/>
+                        <RadioButton x:Name="rbPatruCamereMod" Content="4 camere" GroupName="TipApMod" Margin="0,0,15,5"/>
+                        <RadioButton x:Name="rbPenthouseMod" Content="Penthouse" GroupName="TipApMod" Margin="0,0,0,5"/>
+                    </WrapPanel>
+                </StackPanel>
+
+                <Grid Grid.Row="5" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- ListBox multi-select pentru facilitati -->
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Facilitati (selectie multipla)" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                        <ListBox x:Name="lbFacilitatiMod"
+                                 Height="120"
+                                 SelectionMode="Multiple"
+                                 FontSize="13"
+                                 Background="#F9F9F9"
+                                 BorderBrush="#CCCCCC"/>
+                    </StackPanel>
+
+                    <!-- ListBox single pentru finantare -->
+                    <StackPanel Grid.Column="2">
+                        <Label Content="Tip finantare" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
+                        <ListBox x:Name="lbFinantareMod"
+                                 Height="120"
+                                 SelectionMode="Single"
+                                 FontSize="13"
+                                 Background="#F9F9F9"
+                                 BorderBrush="#CCCCCC"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="0,10,0,10">
+                    <Button x:Name="btnActualizeaza"
+                            Content="Actualizeaza"
+                            Width="180"
+                            Height="34"
+                            Margin="0,0,10,0"
+                            Background="#1D3557"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="btnActualizeaza_Click"/>
+                </StackPanel>
+
+                <Label x:Name="lblMesajModifica"
+                       Grid.Row="7"
+                       Foreground="#1E7832"
+                       FontWeight="Bold"
+                       Margin="0,5,0,10"/>
             </Grid>
         </Grid>
     </DockPanel>

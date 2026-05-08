@@ -9,7 +9,22 @@ namespace NivelStocareDate
 
         public void AddApartament(Apartament ap)
         {
+            ap.DataActualizare = DateTime.Today;
             apartamente.Add(ap);
+        }
+
+        // lab 9 - modificare apartament dupa numar
+        public void ModificaApartament(Apartament apModificat)
+        {
+            for(int i = 0; i < apartamente.Count; i++)
+            {
+                if(apartamente[i].Numar == apModificat.Numar)
+                {
+                    apModificat.DataActualizare = DateTime.Today;
+                    apartamente[i] = apModificat;
+                    return;
+                }
+            }
         }
         public void AddChirias(Chirias ch)
         {
