@@ -19,9 +19,11 @@ ApartManager este o aplicatie consola C# pentru gestionarea unei cladiri de apar
 PIU-Laboratoare/
 ├── README.md
 ├── .gitignore
-├── Lab1_SalariuAngajat/       # Calcul salariu angajat
-├── ApartManager/              # Aplicatia practica (dezvoltata pe parcurs)
-└── ...                        # Laboratoare viitoare
+├── ApartManager.sln              # solutia principala
+├── ApartManager/                 # aplicatia consola
+├── LibrarieModele/               # clasele Apartament, Chirias, enum-uri
+├── NivelStocareDate/             # IStocareData + memorie + fisier text
+└── NivelUIWPF/                   # interfata grafica WPF (lab 6+)
 ```
 
 ## Laboratoare
@@ -30,8 +32,20 @@ PIU-Laboratoare/
 |-----|------|-----------|
 | 1 | Calcul salariu angajat | Citire date, conversii de tip, structuri conditionale |
 | 6 | WPF - prima fereastra | Label-uri, culori, fonturi si fereastra maximizata |
+| 7 | Validari si controale | TextBox, RadioButton, CheckBox + validari pe formular |
+| 8 | Layout managers | DockPanel cu meniu vertical, WrapPanel responsive, cautare apartament dupa numar |
+| 9 | ListBox / ComboBox / DatePicker | Modificare apartament cu ComboBox, ListBox multi-select pt facilitati, DatePicker pt data adaugare, ListBox single pt tip finantare |
+| 10 | Data Binding | INotifyPropertyChanged pe Chirias, ObservableCollection, binding TwoWay + element-to-element, CRUD complet pt chiriasi |
+
+## Cum rulez aplicatia
+
+1. Deschid `ApartManager.sln` in Visual Studio
+2. Click dreapta pe **NivelUIWPF** -> Set as Startup Project
+3. F5 (sau Ctrl+F5)
+
+Daca dau eroare ciudata gen "AddStudent" sau alte resturi, sterg folderele `bin` si `obj` din proiecte si dau Build din nou.
 
 ## Tehnologii
 
 - C# / .NET 10
-- Visual Studio 2022
+- Visual Studio 2022 / 2026
