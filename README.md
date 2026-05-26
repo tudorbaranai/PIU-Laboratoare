@@ -36,6 +36,7 @@ PIU-Laboratoare/
 | 8 | Layout managers | DockPanel cu meniu vertical, WrapPanel responsive, cautare apartament dupa numar |
 | 9 | ListBox / ComboBox / DatePicker | Modificare apartament cu ComboBox, ListBox multi-select pt facilitati, DatePicker pt data adaugare, ListBox single pt tip finantare |
 | 10 | Data Binding | INotifyPropertyChanged pe Chirias, ObservableCollection, binding TwoWay + element-to-element, CRUD complet pt chiriasi |
+| 11 | Validari + MVVM | IDataErrorInfo pe Chirias, filtrare live cu CollectionViewSource, ViewModel simplu pt zona de chiriasi |
 
 ## Cum rulez aplicatia
 

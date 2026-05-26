@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NivelUIWPF"
         mc:Ignorable="d"
-        Title="Lab 9 - ApartManager"
+        Title="Lab 11 - ApartManager"
         Height="650"
         Width="1050"
         MinWidth="750"
@@ -552,6 +552,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -570,21 +572,31 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
                         <Label Content="Nume" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
-                        <TextBox Height="30"
+                        <TextBox x:Name="txtChiriasNume"
+                                 Height="30"
                                  FontSize="14"
                                  Padding="8,0"
                                  VerticalContentAlignment="Center"
                                  MaxLength="30"
-                                 Text="{Binding ChiriasCurent.Nume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding ChiriasCurent.Nume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                        <TextBlock FontSize="11"
+                                   Foreground="Red"
+                                   Margin="0,4,0,0"
+                                   Text="{Binding ElementName=txtChiriasNume, Path=(Validation.Errors)/ErrorContent}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <Label Content="Prenume" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
-                        <TextBox Height="30"
+                        <TextBox x:Name="txtChiriasPrenume"
+                                 Height="30"
                                  FontSize="14"
                                  Padding="8,0"
                                  VerticalContentAlignment="Center"
                                  MaxLength="30"
-                                 Text="{Binding ChiriasCurent.Prenume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding ChiriasCurent.Prenume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                        <TextBlock FontSize="11"
+                                   Foreground="Red"
+                                   Margin="0,4,0,0"
+                                   Text="{Binding ElementName=txtChiriasPrenume, Path=(Validation.Errors)/ErrorContent}"/>
                     </StackPanel>
                 </Grid>
 
@@ -596,21 +608,31 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
                         <Label Content="Telefon" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
-                        <TextBox Height="30"
+                        <TextBox x:Name="txtChiriasTelefon"
+                                 Height="30"
                                  FontSize="14"
                                  Padding="8,0"
                                  VerticalContentAlignment="Center"
-                                 MaxLength="20"
-                                 Text="{Binding ChiriasCurent.Telefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                 MaxLength="10"
+                                 Text="{Binding ChiriasCurent.Telefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                        <TextBlock FontSize="11"
+                                   Foreground="Red"
+                                   Margin="0,4,0,0"
+                                   Text="{Binding ElementName=txtChiriasTelefon, Path=(Validation.Errors)/ErrorContent}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <Label Content="Numar apartament" FontWeight="Bold" Padding="0" Margin="0,0,0,6"/>
-                        <TextBox Height="30"
+                        <TextBox x:Name="txtChiriasApartament"
+                                 Height="30"
                                  FontSize="14"
                                  Padding="8,0"
                                  VerticalContentAlignment="Center"
                                  MaxLength="5"
-                                 Text="{Binding ChiriasCurent.NumarApartament, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{Binding ChiriasCurent.NumarApartament, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+                        <TextBlock FontSize="11"
+                                   Foreground="Red"
+                                   Margin="0,4,0,0"
+                                   Text="{Binding ElementName=txtChiriasApartament, Path=(Validation.Errors)/ErrorContent}"/>
                     </StackPanel>
                 </Grid>
 
@@ -622,8 +644,16 @@
                            Foreground="#555555"
                            Margin="0,0,0,10"/>
 
+                <TextBlock x:Name="tbErrChiriasGeneral"
+                           Grid.Row="4"
+                           Text=""
+                           FontSize="12"
+                           Foreground="Red"
+                           FontWeight="Bold"
+                           Margin="0,0,0,8"/>
+
                 <!-- butoane CRUD -->
-                <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,5,0,10">
+                <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,5,0,10">
                     <Button x:Name="btnAdaugaChirias"
                             Content="Adauga"
                             Width="110"
@@ -632,6 +662,7 @@
                             Background="#1E7832"
                             Foreground="White"
                             FontWeight="Bold"
+                            IsEnabled="{Binding EsteChiriasValid}"
                             Click="btnAdaugaChirias_Click"/>
                     <Button x:Name="btnModificaChirias"
                             Content="Modifica"
@@ -641,6 +672,7 @@
                             Background="#1D3557"
                             Foreground="White"
                             FontWeight="Bold"
+                            IsEnabled="{Binding EsteChiriasValid}"
                             Click="btnModificaChirias_Click"/>
                     <Button x:Name="btnStergeChirias"
                             Content="Sterge"
@@ -659,19 +691,39 @@
                 </StackPanel>
 
                 <Label x:Name="lblMesajChirias"
-                       Grid.Row="5"
+                       Grid.Row="6"
                        FontWeight="Bold"
                        Margin="0,0,0,8"/>
 
-                <!-- BINDING ELEMENT-TO-ELEMENT: nr de chiriasi din DataGrid (exemplu lab 10 sectiunea 7) -->
-                <Label Grid.Row="6"
+                <Grid Grid.Row="7" Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"
+                           Content="Cauta chirias:"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           Padding="0"
+                           Margin="0,0,10,0"/>
+                    <TextBox Grid.Column="1"
+                             Height="30"
+                             FontSize="14"
+                             Padding="8,0"
+                             VerticalContentAlignment="Center"
+                             Text="{Binding FiltruChirias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+
+                <!-- BINDING ELEMENT-TO-ELEMENT: nr de chiriasi din DataGrid -->
+                <Label Grid.Row="8"
                        Content="{Binding ElementName=dgChiriasi, Path=Items.Count, StringFormat='Numar chiriasi: {0}'}"
                        FontWeight="Bold"
                        Foreground="#1D3557"
                        Margin="0,0,0,8"/>
 
                 <DataGrid x:Name="dgChiriasi"
-                          Grid.Row="7"
+                          Grid.Row="9"
+                          ItemsSource="{Binding ChiriasiView}"
                           AutoGenerateColumns="False"
                           IsReadOnly="True"
                           CanUserAddRows="False"
