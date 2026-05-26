@@ -14,6 +14,7 @@ namespace NivelUIWPF
         private const int ETAJ_MAXIM = 50;
         private const double SUPRAFATA_MAXIMA = 1000;
         private const double PRET_MAXIM = 100000;
+        private static readonly DateTime DATA_MINIMA_APARTAMENT = new DateTime(1980, 1, 1);
 
         // optiuni finantare pt ListBox (lab 9)
         private static readonly string[] OPTIUNI_FINANTARE = { "Disponibil", "Inchiriat", "Vandut" };
@@ -59,6 +60,10 @@ namespace NivelUIWPF
 
             // DatePicker la adaugare - default azi
             dpDataAdaugare.SelectedDate = DateTime.Today;
+            dpDataAdaugare.DisplayDateStart = DATA_MINIMA_APARTAMENT;
+            dpDataAdaugare.DisplayDateEnd = DateTime.Today;
+            dpDataAdaugareMod.DisplayDateStart = DATA_MINIMA_APARTAMENT;
+            dpDataAdaugareMod.DisplayDateEnd = DateTime.Today;
         }
 
         // Initializeaza ComboBox si atribuie event handler
@@ -141,12 +146,23 @@ namespace NivelUIWPF
                 return;
             }
 
+            if(!ValideazaDataApartament(dpDataAdaugare, out DateTime dataAdaugare))
+            {
+                MessageBox.Show(
+                    "Data invalida! Data trebuie sa fie intre 01.01.1980 si data curenta.",
+                    "Data invalida",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                dpDataAdaugare.Focus();
+                return;
+            }
+
             TipApartament tip = GetTipSelectat();
             FacilitatiApartament facilitati = GetFacilitatiSelectate();
 
             Apartament ap = new Apartament(numar, etaj, suprafata, pret, tip, facilitati);
             // lab 9 - data adaugare din DatePicker, finantare din ListBox
-            ap.DataAdaugare = dpDataAdaugare.SelectedDate ?? DateTime.Today;
+            ap.DataAdaugare = dataAdaugare;
             ap.TipFinantare = lbFinantareAdd.SelectedItem as string ?? "Disponibil";
             adminApartamente.AddApartament(ap);
 
@@ -303,6 +319,14 @@ namespace NivelUIWPF
             AscundeEroare(txtPret, tbErrPret);
         }
 
+        private bool ValideazaDataApartament(DatePicker datePicker, out DateTime data)
+        {
+            data = datePicker.SelectedDate ?? DateTime.MinValue;
+            return datePicker.SelectedDate.HasValue &&
+                   data >= DATA_MINIMA_APARTAMENT &&
+                   data <= DateTime.Today;
+        }
+
         private void AscundeEroare(TextBox tb, TextBlock err)
         {
             tb.ClearValue(Control.BorderBrushProperty);
@@ -437,6 +461,14 @@ namespace NivelUIWPF
                 return;
             }
 
+            if(!ValideazaDataApartament(dpDataAdaugareMod, out DateTime dataAd))
+            {
+                lblMesajModifica.Foreground = new SolidColorBrush(Color.FromRgb(160, 40, 40));
+                lblMesajModifica.Content = "Data invalida! Data trebuie sa fie intre 01.01.1980 si data curenta.";
+                dpDataAdaugareMod.Focus();
+                return;
+            }
+
             TipApartament tip = GetTipSelectatModifica();
 
             // facilitati din ListBox multi-select
@@ -448,7 +480,6 @@ namespace NivelUIWPF
             }
 
             string finantare = lbFinantareMod.SelectedItem as string ?? "Disponibil";
-            DateTime dataAd = dpDataAdaugareMod.SelectedDate ?? apOriginal.DataAdaugare;
 
             // construiesc apartamentul modificat (numarul ramane acelasi)
             Apartament apNou = new Apartament(apOriginal.Numar, etaj, suprafata, pret, tip, fac);
