@@ -19,3 +19,7 @@ obj/
 .idea/
 *.swp
 *.swo
+
+## Datele salvate de aplicatie (contin nume si telefoane de chiriasi)
+*_apartamente.txt
+*_chiriasi.txt
