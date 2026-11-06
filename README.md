@@ -62,4 +62,4 @@ Dacă build-ul dă erori ciudate după ce schimb branch-ul, șterg folderele `bi
 
 ## Drepturi
 
-© 2026 Tudor Baranai. Toate drepturile rezervate. Codul e public ca să poată fi citit, nu ca să fie refolosit.
+© 2026 Tudor Baranai. Toate drepturile rezervate. Codul e public ca să poată fi citit, nu ca să fie refolosit. Vezi [LICENSE](LICENSE).
