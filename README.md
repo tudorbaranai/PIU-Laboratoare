@@ -20,7 +20,7 @@ Aplicație C# pentru administratorul unei clădiri cu apartamente închiriate: e
 
 Soluția e împărțită pe niveluri, astfel încât interfața să nu depindă de felul în care sunt salvate datele:
 
-```
+```text
 ApartManager.sln
 ├── LibrarieModele/     clasele Apartament și Chirias, plus enum-urile
 ├── NivelStocareDate/   interfața IStocareData, cu salvare în memorie sau în fișier text
@@ -31,7 +31,7 @@ ApartManager.sln
 ## Laboratoare
 
 | Nr. | Temă | Ce am făcut |
-|-----|------|-------------|
+| ----- | ------ | ------------- |
 | 1 | Calcul salariu angajat | Citire date, conversii de tip, structuri condiționale |
 | 2 | Clase | Clasele `Apartament` și `Chirias` |
 | 3 | Colecții | Meniu în consolă și liste `List<T>` |
